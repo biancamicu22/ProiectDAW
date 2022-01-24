@@ -4,9 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using ProiectDAW.Models;
 
-
-namespace ProiectMDS.Models
+namespace ProiectDAW.Models
 {
     public class Utilizator
     {
@@ -37,5 +37,7 @@ namespace ProiectMDS.Models
         public ICollection<Rezervare> Rezervare { get; set; }
         public ICollection<Fotografie> Fotografie { get; set; }
         public Portofel Portofel {  get; set; }
+
+        public Role Role;
     }
 }

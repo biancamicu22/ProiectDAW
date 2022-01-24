@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace ProiectMDS.Models
+namespace ProiectDAW.Models
 {
     public class Vacanta
     {

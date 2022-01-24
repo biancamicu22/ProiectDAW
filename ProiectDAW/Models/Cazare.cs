@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 
-namespace ProiectMDS.Models
+namespace ProiectDAW.Models
 {
     public class Cazare
     {
