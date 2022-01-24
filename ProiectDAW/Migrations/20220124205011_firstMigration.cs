@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ProiectDAW.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class firstMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -44,8 +44,7 @@ namespace ProiectDAW.Migrations
                 name: "Facilitati",
                 columns: table => new
                 {
-                    ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Denumire = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -91,14 +90,13 @@ namespace ProiectDAW.Migrations
                 name: "Pachete",
                 columns: table => new
                 {
-                    ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CazareID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     FacilitateID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    FacilitateID1 = table.Column<int>(type: "int", nullable: true)
+                    ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Pachete", x => x.ID);
+                    table.PrimaryKey("PK_Pachete", x => new { x.CazareID, x.FacilitateID });
                     table.ForeignKey(
                         name: "FK_Pachete_Cazari_CazareID",
                         column: x => x.CazareID,
@@ -106,11 +104,11 @@ namespace ProiectDAW.Migrations
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Pachete_Facilitati_FacilitateID1",
-                        column: x => x.FacilitateID1,
+                        name: "FK_Pachete_Facilitati_FacilitateID",
+                        column: x => x.FacilitateID,
                         principalTable: "Facilitati",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -157,15 +155,15 @@ namespace ProiectDAW.Migrations
                 name: "Bilete",
                 columns: table => new
                 {
-                    ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     VacantaID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     AtractieID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CodBilet = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DataVizita = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Bilete", x => x.ID);
+                    table.PrimaryKey("PK_Bilete", x => new { x.VacantaID, x.AtractieID });
                     table.ForeignKey(
                         name: "FK_Bilete_Atractii_AtractieID",
                         column: x => x.AtractieID,
@@ -184,16 +182,16 @@ namespace ProiectDAW.Migrations
                 name: "Rezervari",
                 columns: table => new
                 {
-                    ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UtilizatorID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     VacantaID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     DataRezervare = table.Column<DateTime>(type: "Date", nullable: false),
                     Review = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Rating = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Rezervari", x => x.ID);
+                    table.PrimaryKey("PK_Rezervari", x => new { x.VacantaID, x.UtilizatorID });
                     table.ForeignKey(
                         name: "FK_Rezervari_Utilizatori_UtilizatorID",
                         column: x => x.UtilizatorID,
@@ -212,16 +210,16 @@ namespace ProiectDAW.Migrations
                 name: "RezervariCazari",
                 columns: table => new
                 {
-                    ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     VacantaID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CazareID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     DataSosire = table.Column<DateTime>(type: "Date", nullable: false),
                     DataPlecare = table.Column<DateTime>(type: "Date", nullable: false),
                     CodRezervare = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RezervariCazari", x => x.ID);
+                    table.PrimaryKey("PK_RezervariCazari", x => new { x.VacantaID, x.CazareID });
                     table.ForeignKey(
                         name: "FK_RezervariCazari_Cazari_CazareID",
                         column: x => x.CazareID,
@@ -242,24 +240,14 @@ namespace ProiectDAW.Migrations
                 column: "AtractieID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Bilete_VacantaID",
-                table: "Bilete",
-                column: "VacantaID");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Fotografii_UtilizatorID",
                 table: "Fotografii",
                 column: "UtilizatorID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Pachete_CazareID",
+                name: "IX_Pachete_FacilitateID",
                 table: "Pachete",
-                column: "CazareID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Pachete_FacilitateID1",
-                table: "Pachete",
-                column: "FacilitateID1");
+                column: "FacilitateID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Portofel_UtilizatorID",
@@ -273,19 +261,9 @@ namespace ProiectDAW.Migrations
                 column: "UtilizatorID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Rezervari_VacantaID",
-                table: "Rezervari",
-                column: "VacantaID");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_RezervariCazari_CazareID",
                 table: "RezervariCazari",
                 column: "CazareID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_RezervariCazari_VacantaID",
-                table: "RezervariCazari",
-                column: "VacantaID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

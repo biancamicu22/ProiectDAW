@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ProiectDAW.DTO;
 using ProiectDAW.Models;
 using ProiectDAW.Services;
+using ProiectDAW.Utilities;
 
 namespace ProiectDAW.Controllers
 {
@@ -31,19 +32,14 @@ namespace ProiectDAW.Controllers
         }
 
         [HttpPost("create")]
-        public IActionResult Create(UserRequestDTO user)
+        public IActionResult Create(UserDTO user)
         {
-            /*var userToCreate = new Utilizator
-            {
-                Prenume = user.FirstName,
-                Nume = user.LastName,
-                Username = user.UserName,
-                Parola = BCrypt.Net.BCrypt.HashPassword(user.Password),
-                Role = Role.User
-            };*/
+            user.Role = Role.User;
+            _userService.Create(user);
             return Ok();
         }
 
+        [Authorization(Role.Admin)]
         [HttpGet]
         public IActionResult GetAllUsers()
         {

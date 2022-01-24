@@ -10,8 +10,8 @@ using ProiectDAW.Data;
 namespace ProiectDAW.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20220124145613_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20220124205011_firstMigration")]
+    partial class firstMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,7 +21,7 @@ namespace ProiectDAW.Migrations
                 .HasAnnotation("ProductVersion", "5.0.13")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("ProiectMDS.Models.Atractie", b =>
+            modelBuilder.Entity("ProiectDAW.Models.Atractie", b =>
                 {
                     b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd()
@@ -54,10 +54,9 @@ namespace ProiectDAW.Migrations
                     b.ToTable("Atractii");
                 });
 
-            modelBuilder.Entity("ProiectMDS.Models.Bilet", b =>
+            modelBuilder.Entity("ProiectDAW.Models.Bilet", b =>
                 {
-                    b.Property<Guid>("ID")
-                        .ValueGeneratedOnAdd()
+                    b.Property<Guid>("VacantaID")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("AtractieID")
@@ -69,19 +68,18 @@ namespace ProiectDAW.Migrations
                     b.Property<DateTime>("DataVizita")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("VacantaID")
+                    b.Property<Guid>("ID")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("ID");
+                    b.HasKey("VacantaID", "AtractieID");
 
                     b.HasIndex("AtractieID");
-
-                    b.HasIndex("VacantaID");
 
                     b.ToTable("Bilete");
                 });
 
-            modelBuilder.Entity("ProiectMDS.Models.Cazare", b =>
+            modelBuilder.Entity("ProiectDAW.Models.Cazare", b =>
                 {
                     b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd()
@@ -113,12 +111,11 @@ namespace ProiectDAW.Migrations
                     b.ToTable("Cazari");
                 });
 
-            modelBuilder.Entity("ProiectMDS.Models.Facilitate", b =>
+            modelBuilder.Entity("ProiectDAW.Models.Facilitate", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Denumire")
                         .IsRequired()
@@ -129,7 +126,7 @@ namespace ProiectDAW.Migrations
                     b.ToTable("Facilitati");
                 });
 
-            modelBuilder.Entity("ProiectMDS.Models.Fotografie", b =>
+            modelBuilder.Entity("ProiectDAW.Models.Fotografie", b =>
                 {
                     b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd()
@@ -151,31 +148,26 @@ namespace ProiectDAW.Migrations
                     b.ToTable("Fotografii");
                 });
 
-            modelBuilder.Entity("ProiectMDS.Models.Pachet", b =>
+            modelBuilder.Entity("ProiectDAW.Models.Pachet", b =>
                 {
-                    b.Property<Guid>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("CazareID")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("FacilitateID")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int?>("FacilitateID1")
-                        .HasColumnType("int");
+                    b.Property<Guid>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("ID");
+                    b.HasKey("CazareID", "FacilitateID");
 
-                    b.HasIndex("CazareID");
-
-                    b.HasIndex("FacilitateID1");
+                    b.HasIndex("FacilitateID");
 
                     b.ToTable("Pachete");
                 });
 
-            modelBuilder.Entity("ProiectMDS.Models.Portofel", b =>
+            modelBuilder.Entity("ProiectDAW.Models.Portofel", b =>
                 {
                     b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd()
@@ -199,14 +191,20 @@ namespace ProiectDAW.Migrations
                     b.ToTable("Portofel");
                 });
 
-            modelBuilder.Entity("ProiectMDS.Models.Rezervare", b =>
+            modelBuilder.Entity("ProiectDAW.Models.Rezervare", b =>
                 {
-                    b.Property<Guid>("ID")
-                        .ValueGeneratedOnAdd()
+                    b.Property<Guid>("VacantaID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UtilizatorID")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DataRezervare")
                         .HasColumnType("Date");
+
+                    b.Property<Guid>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Rating")
                         .HasColumnType("int");
@@ -214,25 +212,16 @@ namespace ProiectDAW.Migrations
                     b.Property<string>("Review")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("UtilizatorID")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("VacantaID")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("ID");
+                    b.HasKey("VacantaID", "UtilizatorID");
 
                     b.HasIndex("UtilizatorID");
-
-                    b.HasIndex("VacantaID");
 
                     b.ToTable("Rezervari");
                 });
 
-            modelBuilder.Entity("ProiectMDS.Models.RezervareCazare", b =>
+            modelBuilder.Entity("ProiectDAW.Models.RezervareCazare", b =>
                 {
-                    b.Property<Guid>("ID")
-                        .ValueGeneratedOnAdd()
+                    b.Property<Guid>("VacantaID")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("CazareID")
@@ -247,19 +236,18 @@ namespace ProiectDAW.Migrations
                     b.Property<DateTime>("DataSosire")
                         .HasColumnType("Date");
 
-                    b.Property<Guid>("VacantaID")
+                    b.Property<Guid>("ID")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("ID");
+                    b.HasKey("VacantaID", "CazareID");
 
                     b.HasIndex("CazareID");
-
-                    b.HasIndex("VacantaID");
 
                     b.ToTable("RezervariCazari");
                 });
 
-            modelBuilder.Entity("ProiectMDS.Models.Utilizator", b =>
+            modelBuilder.Entity("ProiectDAW.Models.Utilizator", b =>
                 {
                     b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd()
@@ -298,7 +286,7 @@ namespace ProiectDAW.Migrations
                     b.ToTable("Utilizatori");
                 });
 
-            modelBuilder.Entity("ProiectMDS.Models.Vacanta", b =>
+            modelBuilder.Entity("ProiectDAW.Models.Vacanta", b =>
                 {
                     b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd()
@@ -326,15 +314,15 @@ namespace ProiectDAW.Migrations
                     b.ToTable("Vacante");
                 });
 
-            modelBuilder.Entity("ProiectMDS.Models.Bilet", b =>
+            modelBuilder.Entity("ProiectDAW.Models.Bilet", b =>
                 {
-                    b.HasOne("ProiectMDS.Models.Atractie", "Atractie")
+                    b.HasOne("ProiectDAW.Models.Atractie", "Atractie")
                         .WithMany("Bilet")
                         .HasForeignKey("AtractieID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ProiectMDS.Models.Vacanta", "Vacanta")
+                    b.HasOne("ProiectDAW.Models.Vacanta", "Vacanta")
                         .WithMany("Bilet")
                         .HasForeignKey("VacantaID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -345,9 +333,9 @@ namespace ProiectDAW.Migrations
                     b.Navigation("Vacanta");
                 });
 
-            modelBuilder.Entity("ProiectMDS.Models.Fotografie", b =>
+            modelBuilder.Entity("ProiectDAW.Models.Fotografie", b =>
                 {
-                    b.HasOne("ProiectMDS.Models.Utilizator", "Utilizator")
+                    b.HasOne("ProiectDAW.Models.Utilizator", "Utilizator")
                         .WithMany("Fotografie")
                         .HasForeignKey("UtilizatorID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -356,43 +344,45 @@ namespace ProiectDAW.Migrations
                     b.Navigation("Utilizator");
                 });
 
-            modelBuilder.Entity("ProiectMDS.Models.Pachet", b =>
+            modelBuilder.Entity("ProiectDAW.Models.Pachet", b =>
                 {
-                    b.HasOne("ProiectMDS.Models.Cazare", "Cazare")
+                    b.HasOne("ProiectDAW.Models.Cazare", "Cazare")
                         .WithMany("Pachet")
                         .HasForeignKey("CazareID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ProiectMDS.Models.Facilitate", "Facilitate")
+                    b.HasOne("ProiectDAW.Models.Facilitate", "Facilitate")
                         .WithMany("Pachet")
-                        .HasForeignKey("FacilitateID1");
+                        .HasForeignKey("FacilitateID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Cazare");
 
                     b.Navigation("Facilitate");
                 });
 
-            modelBuilder.Entity("ProiectMDS.Models.Portofel", b =>
+            modelBuilder.Entity("ProiectDAW.Models.Portofel", b =>
                 {
-                    b.HasOne("ProiectMDS.Models.Utilizator", "Utilizator")
+                    b.HasOne("ProiectDAW.Models.Utilizator", "Utilizator")
                         .WithOne("Portofel")
-                        .HasForeignKey("ProiectMDS.Models.Portofel", "UtilizatorID")
+                        .HasForeignKey("ProiectDAW.Models.Portofel", "UtilizatorID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Utilizator");
                 });
 
-            modelBuilder.Entity("ProiectMDS.Models.Rezervare", b =>
+            modelBuilder.Entity("ProiectDAW.Models.Rezervare", b =>
                 {
-                    b.HasOne("ProiectMDS.Models.Utilizator", "Utilizator")
+                    b.HasOne("ProiectDAW.Models.Utilizator", "Utilizator")
                         .WithMany("Rezervare")
                         .HasForeignKey("UtilizatorID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ProiectMDS.Models.Vacanta", "Vacanta")
+                    b.HasOne("ProiectDAW.Models.Vacanta", "Vacanta")
                         .WithMany("Rezervare")
                         .HasForeignKey("VacantaID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -403,15 +393,15 @@ namespace ProiectDAW.Migrations
                     b.Navigation("Vacanta");
                 });
 
-            modelBuilder.Entity("ProiectMDS.Models.RezervareCazare", b =>
+            modelBuilder.Entity("ProiectDAW.Models.RezervareCazare", b =>
                 {
-                    b.HasOne("ProiectMDS.Models.Cazare", "Cazare")
+                    b.HasOne("ProiectDAW.Models.Cazare", "Cazare")
                         .WithMany("RezervareCazare")
                         .HasForeignKey("CazareID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ProiectMDS.Models.Vacanta", "Vacanta")
+                    b.HasOne("ProiectDAW.Models.Vacanta", "Vacanta")
                         .WithMany("RezervareCazare")
                         .HasForeignKey("VacantaID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -422,24 +412,24 @@ namespace ProiectDAW.Migrations
                     b.Navigation("Vacanta");
                 });
 
-            modelBuilder.Entity("ProiectMDS.Models.Atractie", b =>
+            modelBuilder.Entity("ProiectDAW.Models.Atractie", b =>
                 {
                     b.Navigation("Bilet");
                 });
 
-            modelBuilder.Entity("ProiectMDS.Models.Cazare", b =>
+            modelBuilder.Entity("ProiectDAW.Models.Cazare", b =>
                 {
                     b.Navigation("Pachet");
 
                     b.Navigation("RezervareCazare");
                 });
 
-            modelBuilder.Entity("ProiectMDS.Models.Facilitate", b =>
+            modelBuilder.Entity("ProiectDAW.Models.Facilitate", b =>
                 {
                     b.Navigation("Pachet");
                 });
 
-            modelBuilder.Entity("ProiectMDS.Models.Utilizator", b =>
+            modelBuilder.Entity("ProiectDAW.Models.Utilizator", b =>
                 {
                     b.Navigation("Fotografie");
 
@@ -448,7 +438,7 @@ namespace ProiectDAW.Migrations
                     b.Navigation("Rezervare");
                 });
 
-            modelBuilder.Entity("ProiectMDS.Models.Vacanta", b =>
+            modelBuilder.Entity("ProiectDAW.Models.Vacanta", b =>
                 {
                     b.Navigation("Bilet");
 
