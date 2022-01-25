@@ -1,12 +1,14 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProiectDAW.DTO;
 using ProiectDAW.Models;
 using ProiectDAW.Services;
 using ProiectDAW.Utilities;
-
+using System;
 namespace ProiectDAW.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
@@ -17,7 +19,7 @@ namespace ProiectDAW.Controllers
         {
             _userService = userService;
         }
-
+        [Microsoft.AspNetCore.Authorization.AllowAnonymous]
         [HttpPost("authenticate")]
         public IActionResult Authenticate(UserRequestDTO user)
         {
@@ -30,11 +32,11 @@ namespace ProiectDAW.Controllers
 
             return Ok(response);
         }
-
+        [Microsoft.AspNetCore.Authorization.AllowAnonymous]
         [HttpPost("create")]
         public IActionResult Create(UserDTO user)
         {
-            user.Role = Role.User;
+            user.Role = Role.Admin;
             _userService.Create(user);
             return Ok();
         }
@@ -43,7 +45,21 @@ namespace ProiectDAW.Controllers
         [HttpGet]
         public IActionResult GetAllUsers()
         {
-            return null;
+            var utilizatori = _userService.GetAll();
+            return Ok(utilizatori);
+        }
+
+        [HttpGet("{id}")]
+        public IActionResult GetById([FromHeader ]Guid id)
+        {
+            var currentUser = (Utilizator)HttpContext.Items["User"];
+            if (id != currentUser.ID && currentUser.Role != Role.Admin)
+            {
+                return Unauthorized(new { Message = "Unauthorized" });
+            }
+
+            var utilizator = _userService.GetById(id);
+            return Ok(utilizator);
         }
     }
 }

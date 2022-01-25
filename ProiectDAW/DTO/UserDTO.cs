@@ -19,6 +19,6 @@ namespace ProiectDAW.DTO
         public string Parola { get; set; }
         public DateTime DataNasterii { get; set; }
 
-        public Role Role;
+        public Role Role { get; set; }  
     }
 }

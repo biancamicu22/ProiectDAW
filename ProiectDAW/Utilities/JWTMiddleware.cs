@@ -20,15 +20,16 @@ namespace ProiectDAW.Utilities
 
         public async Task Invoke(HttpContext httpContext, IUserService userService, IJWTUtils jWTUtils)
         {
-            var token = httpContext.Request.Headers["Authorization"].FirstOrDefault()?.Split("").Last();
+            var token = httpContext.Request.Headers["Authorization"].FirstOrDefault()?.Replace("Bearer ", string.Empty);
             var userID = jWTUtils.ValidateJWToken(token);
 
             if (userID != Guid.Empty)
+
             {
                 httpContext.Items["User"] = userService.GetById(userID);
             }
 
             await _next(httpContext);
-        }
+        }   
     }
 }

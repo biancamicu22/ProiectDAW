@@ -15,6 +15,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ProiectDAW.Services;
 using ProiectDAW.Utilities;
+using System.Text.Json.Serialization;
 
 namespace ProiectDAW
 {
@@ -36,7 +37,10 @@ namespace ProiectDAW
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ProiectDAW", Version = "v1" });
             });
-
+            services.AddControllers().AddJsonOptions(x =>
+            {
+                x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            });
             services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.Configure<AppSettings>(result => result.JWTSecret = Configuration.GetValue<string>("AppSettings:Secret"));
             services.AddScoped<IJWTUtils, JWTUtils>();
@@ -54,6 +58,11 @@ namespace ProiectDAW
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ProiectDAW v1"));
             }
+
+            app.UseCors(x => x
+              .AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader());
 
             app.UseHttpsRedirection();
 

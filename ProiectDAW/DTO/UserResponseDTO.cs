@@ -10,6 +10,7 @@ namespace ProiectDAW.DTO
         public string Username { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public Role Role { get; set; }
         public string Token { get; set; }
 
         public UserResponseDTO(Utilizator user, string token)
@@ -18,6 +19,7 @@ namespace ProiectDAW.DTO
             Username = user.Username;
             FirstName = user.Nume;
             LastName = user.Prenume;
+            Role = user.Role;
             Token = token;
         }
     }

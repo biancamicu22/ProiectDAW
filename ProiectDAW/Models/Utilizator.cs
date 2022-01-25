@@ -38,6 +38,6 @@ namespace ProiectDAW.Models
         public ICollection<Fotografie> Fotografie { get; set; }
         public Portofel Portofel {  get; set; }
 
-        public Role Role;
+        public Role Role { get; set; }
     }
 }

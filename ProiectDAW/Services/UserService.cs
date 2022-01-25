@@ -6,28 +6,31 @@ using ProiectDAW.Utilities;
 using ProiectDAW.Models;
 using System;
 using System.Collections.Generic;
+using Microsoft.Extensions.Options;
 
 namespace ProiectDAW.Services
 {
     public class UserService : IUserService
     {
-        public DatabaseContext dbContext;
-        private IJWTUtils IJWTUtils;
+        public DatabaseContext _dbContext;
+        private IJWTUtils _IJWTUtils;
+        private readonly AppSettings _appSettings;
 
-        public UserService(DatabaseContext databaseContext,IJWTUtils jWTUtils)
+        public UserService(DatabaseContext databaseContext,IJWTUtils jWTUtils, IOptions<AppSettings> appSettings)
         {
-            dbContext = databaseContext;
-            IJWTUtils = jWTUtils;  
+            _dbContext = databaseContext;
+            _IJWTUtils = jWTUtils;
+            _appSettings = appSettings.Value;
         }
         public UserResponseDTO Authenticate(UserRequestDTO model)
         {
-            var user = dbContext.Utilizatori.FirstOrDefault(x => x.Username == model.UserName);
+            var user = _dbContext.Utilizatori.FirstOrDefault(x => x.Username == model.UserName);
             if (user == null || !BC.Verify(model.Password, user.Parola))
             {
-                return null;
+                throw new ApplicationException("Username or password is incorrect");
             }
 
-            var jwtToken = IJWTUtils.GenerateJWToken(user);
+            var jwtToken = _IJWTUtils.GenerateJWToken(user);
             return new UserResponseDTO(user, jwtToken);
         }
 
@@ -44,18 +47,18 @@ namespace ProiectDAW.Services
                 Telefon = utilizator.Telefon,
                 };
 
-            dbContext.Utilizatori.Add(user);
-            dbContext.SaveChanges();
+            _dbContext.Utilizatori.Add(user);
+            _dbContext.SaveChanges();
         }
 
         public List<Utilizator> GetAll()
         {
-            return dbContext.Utilizatori.ToList();
+            return _dbContext.Utilizatori.ToList();
         }
 
         public Utilizator GetById(Guid Id)
         {
-            return dbContext.Utilizatori.SingleOrDefault(x => x.ID == Id);
+            return _dbContext.Utilizatori.SingleOrDefault(x => x.ID == Id);
         }
     }
 }
