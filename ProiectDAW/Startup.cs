@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using ProiectDAW.Services;
 using ProiectDAW.Utilities;
 using System.Text.Json.Serialization;
+using ProiectDAW.Repository;
 
 namespace ProiectDAW
 {
@@ -31,7 +32,7 @@ namespace ProiectDAW
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddAutoMapper(typeof(Startup));
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -45,8 +46,8 @@ namespace ProiectDAW
             services.Configure<AppSettings>(result => result.JWTSecret = Configuration.GetValue<string>("AppSettings:Secret"));
             services.AddScoped<IJWTUtils, JWTUtils>();
             services.AddScoped<IUserService, UserService>();
-            
-            
+            services.AddScoped<IPortofelRepository, PortofelRepository>();
+            services.AddScoped<IAtractieRepository, AtractieRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
