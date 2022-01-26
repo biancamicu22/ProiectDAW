@@ -15,22 +15,52 @@ namespace ProiectDAW.Repository
             this._context = context;
         }
 
-        public void Add(T entity)
+        public bool Add(T entity)
         {
-            _context.Set<T>().Add(entity);
-            _context.SaveChanges();
+            try
+            {
+                _context.Set<T>().Add(entity);
+                _context.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+
+            }
         }
 
-        public void Delete(T entity)
+        public bool Delete(Guid id)
         {
-            _context.Set<T>().Remove(entity);
-            _context.SaveChanges();
+            try
+            {
+                var obj = _context.Set<T>().Find(id);
+                if(obj != null)
+                {
+                    _context.Remove(obj);
+                    _context.SaveChanges();
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
 
-        public void Edit(T entity)
+        public bool Edit(T entity)
         {
-            _context.Entry(entity).State = EntityState.Modified;
-            _context.SaveChanges();
+            try
+            {
+                _context.Entry(entity).State = EntityState.Modified;
+                _context.SaveChanges();
+                return true;
+            }
+            catch   (Exception ex)
+            {
+                return false;
+            }
         }
 
         public IEnumerable<T> Find(Expression<Func<T, bool>> expression)
@@ -38,7 +68,7 @@ namespace ProiectDAW.Repository
             return _context.Set<T>().Where(expression);
         }
 
-        public T GetById(int id)
+        public T GetById(Guid id)
         {
             return _context.Set<T>().Find(id);
         }

@@ -9,7 +9,7 @@ namespace ProiectDAW.Controllers
 {
     [Route("portofel")]
     [ApiController]
-    public class PortofelController : Controller
+    public class PortofelController : ControllerBase
     {
         private IPortofelRepository _portofelRepository;
         private IMapper _autoMapper;
@@ -20,13 +20,58 @@ namespace ProiectDAW.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(PortofelDTO portofel)
+        public IActionResult Create([FromBody] PortofelDTO portofel)
         {
             var port = _autoMapper.Map<Portofel>(portofel);
-            _portofelRepository.Add(port);
-            return Ok();
+            try
+            {
+                return Ok(_portofelRepository.Add(port));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
         }
 
-        
+        [HttpPut]
+        public IActionResult Update([FromBody] PortofelUpdateDTO portofel)
+        {
+            var port = _autoMapper.Map<Portofel>(portofel);
+            try
+            {
+                return Ok(_portofelRepository.Edit(port));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpDelete("Id")]
+        public IActionResult Delete(Guid Id )
+        {
+            try
+            {
+                return Ok(_portofelRepository.Delete(Id));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpGet("Id")]
+        public IActionResult GetById(Guid Id)
+        {
+            try
+            {
+                return Ok(_portofelRepository.GetById(Id));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
+        }
+
     }
 }

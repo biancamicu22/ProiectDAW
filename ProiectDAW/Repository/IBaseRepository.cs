@@ -7,11 +7,11 @@ namespace ProiectDAW.Repository
 {
     public interface IBaseRepository<T> where T : class
     {
-        T GetById(int id);
+        T GetById(Guid id);
         IEnumerable<T> List();
-        void Add(T entity);
-        void Delete(T entity);
-        void Edit(T entity);
+        bool Add(T entity);
+        bool Delete(Guid Id);
+        bool Edit(T entity);
         IEnumerable<T> Find(Expression<Func<T, bool>> expression);
     }
 }
