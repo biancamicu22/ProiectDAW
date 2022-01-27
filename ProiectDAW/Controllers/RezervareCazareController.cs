@@ -23,6 +23,8 @@ namespace ProiectDAW.Controllers
         public IActionResult Create([FromBody] RezervareCazareDTO rezervareCazare)
         {
             var rezcaz = _autoMapper.Map<RezervareCazare>(rezervareCazare);
+            Guid id = Guid.NewGuid();
+            rezcaz.ID = id;
             try
             {
                 return Ok(_rezervareCazareRepository.Add(rezcaz));

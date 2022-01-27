@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ProiectDAW.DTO;
 using ProiectDAW.Models;
 using ProiectDAW.Repository;
+using ProiectDAW.Utilities;
 using System;
 namespace ProiectDAW.Controllers
 {
@@ -31,7 +32,7 @@ namespace ProiectDAW.Controllers
                 return BadRequest();
             }
         }
-
+        [Authorization(Role.Admin)]
         [HttpPut]
         public IActionResult Update([FromBody] AtractieUpdateDTO atractie)
         {
@@ -45,7 +46,7 @@ namespace ProiectDAW.Controllers
                 return BadRequest();
             }
         }
-
+        [Authorization(Role.Admin)]
         [HttpDelete("Id")]
         public IActionResult Delete(Guid Id)
         {

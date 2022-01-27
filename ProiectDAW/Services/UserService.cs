@@ -34,7 +34,7 @@ namespace ProiectDAW.Services
             return new UserResponseDTO(user, jwtToken);
         }
 
-        public void Create(UserDTO utilizator)
+        public UserResponseDTO Create(UserDTO utilizator)
         {
             Utilizator user = new Utilizator {
                 Username = utilizator.Username,
@@ -49,6 +49,10 @@ namespace ProiectDAW.Services
 
             _dbContext.Utilizatori.Add(user);
             _dbContext.SaveChanges();
+
+   
+            var jwtToken = _IJWTUtils.GenerateJWToken(user);
+            return new UserResponseDTO(user, jwtToken);
         }
 
         public List<Utilizator> GetAll()

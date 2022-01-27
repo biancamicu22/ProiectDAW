@@ -48,6 +48,14 @@ namespace ProiectDAW
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IPortofelRepository, PortofelRepository>();
             services.AddScoped<IAtractieRepository, AtractieRepository>();
+            services.AddScoped<IBiletRepository, BiletRepository>();
+            services.AddScoped<ICazareRepository, CazareRepository>();
+            services.AddScoped<IFacilitatiRepository, FacilitatiRepository>();
+            services.AddScoped<IFotografieRepository, FotografieRepository>();
+            services.AddScoped<IPachetRepository, PachetRepository>();
+            services.AddScoped<IRezervareRepository, RezervareRepository>();
+            services.AddScoped<IRezervareCazareRepository, RezervareCazareRepository>();
+            services.AddScoped<IVacantaRepository, VacantaRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -9,7 +9,7 @@ namespace ProiectDAW.Services
     {
         //Auth
         UserResponseDTO Authenticate(UserRequestDTO model);
-        void Create(UserDTO utilizator);
+        UserResponseDTO Create(UserDTO utilizator);
         List<Utilizator> GetAll();
         Utilizator GetById(Guid Id);
     }

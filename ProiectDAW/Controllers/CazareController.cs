@@ -4,6 +4,7 @@ using ProiectDAW.DTO;
 using ProiectDAW.Models;
 using ProiectDAW.Repository;
 using System;
+using ProiectDAW.Utilities;
 
 namespace ProiectDAW.Controllers
 {
@@ -32,7 +33,7 @@ namespace ProiectDAW.Controllers
                 return BadRequest();
             }
         }
-
+        [Authorization(Role.Admin)]
         [HttpPut]
         public IActionResult Update([FromBody] CazareUpdateDTO cazare)
         {
@@ -46,7 +47,7 @@ namespace ProiectDAW.Controllers
                 return BadRequest();
             }
         }
-
+        [Authorization(Role.Admin)]
         [HttpDelete("Id")]
         public IActionResult Delete(Guid Id)
         {
@@ -61,7 +62,7 @@ namespace ProiectDAW.Controllers
         }
 
         [HttpGet("Id")]
-        public IActionResult GetById(Guid Id)
+        public IActionResult GetById( Guid Id)
         {
             try
             {

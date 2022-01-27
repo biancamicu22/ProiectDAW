@@ -9,7 +9,7 @@ using System;
 namespace ProiectDAW.Controllers
 {
     [Authorize]
-    [Route("api/[controller]")]
+    [Route("utilizator")]
     [ApiController]
     public class UsersController : ControllerBase
     {
@@ -36,9 +36,8 @@ namespace ProiectDAW.Controllers
         [HttpPost("create")]
         public IActionResult Create(UserDTO user)
         {
-            user.Role = Role.Admin;
-            _userService.Create(user);
-            return Ok();
+            user.Role = Role.User;
+            return Ok(_userService.Create(user));
         }
 
         [Authorization(Role.Admin)]
