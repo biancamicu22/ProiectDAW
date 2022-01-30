@@ -85,5 +85,19 @@ namespace ProiectDAW.Controllers
                 return BadRequest();
             }
         }
+
+        [HttpGet("facilitate/{Id}")]
+        public IActionResult GetByFacilitateId(int Id)
+        {
+            
+            try
+            {
+                return Ok(_facilitatiRepository.GetByFacilitateId(Id));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
+        }
     }
 }

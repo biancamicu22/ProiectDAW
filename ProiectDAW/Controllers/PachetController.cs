@@ -23,6 +23,7 @@ namespace ProiectDAW.Controllers
         public IActionResult Create([FromBody] PachetDTO pachet)
         {
             var pac = _autoMapper.Map<Pachet>(pachet);
+            pac.ID = Guid.NewGuid();
             try
             {
                 return Ok(_pachetRepository.Add(pac));

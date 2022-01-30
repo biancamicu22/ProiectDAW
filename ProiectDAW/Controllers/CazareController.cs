@@ -86,5 +86,12 @@ namespace ProiectDAW.Controllers
                 return BadRequest();
             }
         }
+
+        [HttpGet("byPret")]
+        public void GetAllGrouped()
+        {
+              _cazareRepository.getCazareGroupBy();
+           
+        }
     }
 }
