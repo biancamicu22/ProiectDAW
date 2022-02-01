@@ -4,6 +4,7 @@ using ProiectDAW.DTO;
 using ProiectDAW.Models;
 using ProiectDAW.Repository;
 using System;
+using System.Collections.Generic;
 
 namespace ProiectDAW.Controllers
 {
@@ -23,6 +24,7 @@ namespace ProiectDAW.Controllers
         public IActionResult Create([FromBody] BiletDTO bilet)
         {
             var bil = _autoMapper.Map<Bilet>(bilet);
+            bil.ID = Guid.NewGuid();
             try
             {
                 return Ok(_biletRepository.Add(bil));
@@ -84,6 +86,12 @@ namespace ProiectDAW.Controllers
             {
                 return BadRequest();
             }
+        }
+
+        [HttpGet("ticketsBetweenRangeDate")]
+        public List<Bilet> getAllTicketsBetweenRangeDate()
+        {
+            return _biletRepository.getBileteConditioned();
         }
 
     }
