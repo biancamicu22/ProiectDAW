@@ -4,5 +4,6 @@ namespace ProiectDAW.Repository
 {
     public interface IVacantaRepository : IBaseRepository<Vacanta>
     {
+        string VacanteRezervariCazare();
     }
 }

@@ -1,8 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using ProiectDAW.Data;
 using ProiectDAW.Models;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 
 namespace ProiectDAW.Repository
 {
@@ -28,6 +31,11 @@ namespace ProiectDAW.Repository
                     }
                 }
             }
+        }
+
+        public List<Cazare> getCazareRezervare()
+        {
+            return _context.Cazari.Include(c => c.RezervareCazare).ToList();
         }
     }
 }

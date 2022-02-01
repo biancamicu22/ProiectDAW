@@ -17,6 +17,7 @@ using ProiectDAW.Services;
 using ProiectDAW.Utilities;
 using System.Text.Json.Serialization;
 using ProiectDAW.Repository;
+using Newtonsoft.Json;
 
 namespace ProiectDAW
 {
@@ -33,7 +34,9 @@ namespace ProiectDAW
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAutoMapper(typeof(Startup));
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(options =>
+            options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            );
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ProiectDAW", Version = "v1" });

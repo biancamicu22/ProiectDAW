@@ -85,5 +85,11 @@ namespace ProiectDAW.Controllers
                 return BadRequest();
             }
         }
+
+        [HttpGet("vacantaRezervare")]
+        public string GetVacantaRezervare()
+        {
+          return  _vacantaRepository.VacanteRezervariCazare();
+        }
     }
 }

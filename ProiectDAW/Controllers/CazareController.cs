@@ -5,6 +5,7 @@ using ProiectDAW.Models;
 using ProiectDAW.Repository;
 using System;
 using ProiectDAW.Utilities;
+using System.Collections.Generic;
 
 namespace ProiectDAW.Controllers
 {
@@ -91,7 +92,15 @@ namespace ProiectDAW.Controllers
         public void GetAllGrouped()
         {
               _cazareRepository.getCazareGroupBy();
-           
+            _cazareRepository.getCazareRezervare();
+
+
+        }
+
+        [HttpGet("cazareCuRezervare")]
+        public List<Cazare> GetAllWithRezervare()
+        {
+            return _cazareRepository.getCazareRezervare();
         }
     }
 }
